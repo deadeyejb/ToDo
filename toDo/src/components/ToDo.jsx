@@ -9,7 +9,7 @@ const ToDo = () => {
   const dispatch = useDispatch();
 
   const handleAddTask = () => {
-    if (newTask) {
+    if (newTask.trim()) {
       dispatch(addTask(newTask));
       setNewTask("");
     }
@@ -25,7 +25,7 @@ const ToDo = () => {
             onChange={(e) => setNewTask(e.target.value)}
           ></input>
           <button
-            className=" outline-2 outline-blue-500 w-10 h-8 rounded p-1 m-1"
+            className=" outline-2 outline-blue-500 w-10 h-8 rounded cursor-pointer p-1 m-1"
             onClick={handleAddTask}
           >
             Add
@@ -34,9 +34,19 @@ const ToDo = () => {
 
         <div className="text-base mt-4">
           <h2>Tasks to do: {activeTasks}</h2>
-          {tasks.map((task) => {
-            return <ul key={task.id}>{task.name}</ul>;
-          })}
+          {tasks.length > 0 &&
+            tasks.map((task) => (
+              <div
+                key={task.id}
+                className="text-blue-500 bg-[#2b2929] rounded mt-1.5 h-10 flex justify-between "
+              >
+                <span className="p-1 ml-2">{task.name}</span>
+                <div>
+                  <button className="p-1 ml-2 cursor-pointer">✅</button>
+                  <button className="p-1 cursor-pointer">🗑️</button>
+                </div>
+              </div>
+            ))}
         </div>
 
         <div className="text-base mt-4">

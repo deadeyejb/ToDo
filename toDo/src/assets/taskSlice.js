@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  tasks: [
-    {
-      id: "",
-      name: "",
-    },
-  ],
+  //tasks should be empty array
+  tasks: [],
   activeTask: 0,
   completedTask: 0,
 };
@@ -16,7 +12,7 @@ const taskSlice = createSlice({
   reducers: {
     addTask: (state, action) => {
       const newTask = {
-        id: state.tasks[state.tasks.length - 1] + 1,
+        id: Date.now(), //generate unique ID
         name: action.payload,
       };
       state.tasks.push(newTask);
