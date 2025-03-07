@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../assets/taskSlice";
+import { addTask, finishTask, removeTask } from "../assets/taskSlice";
 
 const ToDo = () => {
   const [newTask, setNewTask] = useState("");
   const tasks = useSelector((state) => state.tasks.tasks);
   const activeTasks = useSelector((state) => state.tasks.activeTask);
+  const deletedTasks = useSelector((state) => state.tasks.deletedTasks);
+
+  const completedTasks = useSelector((state) => state.tasks.completedTask);
   const dispatch = useDispatch();
 
   const handleAddTask = () => {
@@ -21,7 +24,7 @@ const ToDo = () => {
           <input
             type="text"
             placeholder="Add a task"
-            className="outline-blue-500 outline-2 rounded h-8 w-[240px] m-1 p-1"
+            className="outline-blue-500 outline-2 rounded h-8 w-[340px] m-1 p-1"
             onChange={(e) => setNewTask(e.target.value)}
           ></input>
           <button
@@ -38,19 +41,37 @@ const ToDo = () => {
             tasks.map((task) => (
               <div
                 key={task.id}
-                className="text-blue-500 bg-[#2b2929] rounded mt-1.5 h-10 flex justify-between "
+                className="text-blue-500 bg-[#2b2929] rounded mt-1.5  h-10 flex justify-between  "
               >
-                <span className="p-1 ml-2">{task.name}</span>
-                <div>
-                  <button className="p-1 ml-2 cursor-pointer">✅</button>
-                  <button className="p-1 cursor-pointer">🗑️</button>
+                <span className=" m-2">{task.name}</span>
+                <div className="flex justify-evenly">
+                  <button
+                    className=" cursor-pointer"
+                    onClick={() => dispatch(finishTask(task.id))}
+                  >
+                    ✅
+                  </button>
+                  <button
+                    className=" cursor-pointer"
+                    onClick={() => dispatch(removeTask(task.id))}
+                  >
+                    🗑️
+                  </button>
                 </div>
               </div>
             ))}
         </div>
 
         <div className="text-base mt-4">
-          <h2>Completed Task : 0</h2>
+          <h2>Completed Task : {completedTasks}</h2>
+          {deletedTasks.map((task) => (
+            <div
+              key={task.id}
+              className="text-green-500 bg-[#2b2929] rounded mt-1.5 h-10 flex justify-between "
+            >
+              <span className="p-1 ml-2 line-through">{task.name}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
